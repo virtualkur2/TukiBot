@@ -1,0 +1,23 @@
+{
+  "name": "tukibot",
+  "version": "1.0.0",
+  "description": "A Tuki Bot for Discord",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virtualkur2/TukiBot.git"
+  },
+  "keywords": [
+    "Bot",
+    "Discord"
+  ],
+  "author": "Mauricio Contreras Canepa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/virtualkur2/TukiBot/issues"
+  },
+  "homepage": "https://github.com/virtualkur2/TukiBot#readme"
+}
