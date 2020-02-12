@@ -8,7 +8,7 @@ const botToken = process.env.DISCORD_BOT_TOKEN;
 
 const invokeBot = `${prefix}${invoke}`;
 
-const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 console.log(commandFiles);
 
