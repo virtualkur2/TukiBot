@@ -10,8 +10,6 @@ const invokeBot = `${prefix}${invoke}`;
 
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
-console.log(commandFiles);
-
 const client = new Discord.Client();
 client.commands = new Discord.Collection();;
 
