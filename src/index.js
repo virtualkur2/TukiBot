@@ -11,9 +11,9 @@ const invokeBot = `${prefix}${invoke}`;
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 const client = new Discord.Client();
-client.commands = new Discord.Collection();;
+client.commands = new Discord.Collection();
 
-for(file of commandFiles) {
+for(let file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
 }
@@ -28,6 +28,7 @@ const invokedBy = [];
 const ignoreTime = 1000 * 60 * 5;
 
 client.on('message', message => {
+  console.log(message.author.bot);
   if(!message.content.startsWith(invokeBot)|| message.author.bot) return;
   if(message.content.length > invokeBot.length && message.content.charAt(invokeBot.length) !== ' ') return;
   

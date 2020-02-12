@@ -21,7 +21,7 @@ const noArgs = {
         message.channel.send(`${message.author} QLQ loco!!!`);
         break;
       case 2:
-        message.channel.send(`${message.author} Háblame!!!`);
+        message.channel.send(`${message.author} Háblame mano!!!`);
         break;
       case 3:
         message.channel.send(`${message.author} Ahh vaina!!!`);
