@@ -1,5 +1,5 @@
 const giphyClient = require('../giphyClient');
-const slapGifs = {q: 'slap', limit: 50};
+const slapGifs = {q: 'slap', limit: 100};
 const slapCommand = {
   name: 'slap',
   description: 'Slap user',

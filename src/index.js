@@ -27,6 +27,11 @@ client.once('ready', () => {
 
 const invokedBy = [];
 const ignoreTime = 1000 * 60 * 5;
+const slapOptions = {
+  refreshGifTime : 1000 * 60 * 20,
+  invokers: [],
+  max: 5,
+}
 
 client.on('message', message => {
   if(!message.content.startsWith(invokeBot)|| message.author.bot) return;
@@ -46,10 +51,52 @@ client.on('message', message => {
       client.commands.get('ping').execute(message, args);
       break;
     case 'cachetada':
-      const user1 = utils.getUserFromMention(client, args[0]);
-      const user2 = utils.getUserFromMention(client, args[1]);
-      const users = [user1, user2];
-      client.commands.get('slap').execute(message, users);
+      const elapsed = Date.now();
+      let firstSlap = true;
+      slapOptions.invokers.forEach(invoker => {
+        if(invoker.user === message.author) {
+          firstSlap = !firstSlap;
+        }
+      });
+      if(firstSlap) {
+        slapOptions.invokers.push({
+          user: message.author,
+          date: Date.now(),
+          count: 0,
+          give: true
+        });
+      }
+      let index = 0;
+      for(let i = 0; i < slapOptions.invokers.length; i++) {
+        if(slapOptions.invokers[i].user === message.author) {
+          index = i;
+          break;
+        }
+      }
+      if(elapsed - slapOptions.invokers[index].date <= slapOptions.refreshGifTime) {
+        if(slapOptions.invokers[index].count < slapOptions.max) {
+          slapOptions.invokers[index].count++;
+        } else {
+          slapOptions.invokers[index].give = false;
+        }
+      } else {
+        slapOptions.invokers[index].date = Date.now();
+        slapOptions.invokers[index].count = 0;
+        slapOptions.invokers[index].give = true;
+      }
+      if(slapOptions.invokers[index].give) {
+        const user1 = utils.getUserFromMention(client, args[0]);
+        const user2 = utils.getUserFromMention(client, args[1]);
+        if(user1 && user1.username === 'TukiBOT') {
+          if(!user2 || user2.username === 'TukiBOT') {
+            return message.channel.send('Arranca de aquí diablo, ante que te meta tres tiros pa\' que seas serio.');
+          }
+        }
+        const users = [user1, user2];
+        client.commands.get('slap').execute(message, users);
+      } else {
+        message.channel.send('Bájale el mío, se te va a rompé la mano.');
+      }
       break;
     default:
       return;
