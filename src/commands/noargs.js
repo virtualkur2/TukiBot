@@ -18,7 +18,7 @@ const noArgs = {
     }
     switch (invokedTimes) {
       case 1:
-        message.channel.send(`${message.author} QLQ loco!!!`);
+        message.channel.send(`${message.author} KLK loco!!!`);
         break;
       case 2:
         message.channel.send(`${message.author} Háblame mano!!!`);

@@ -9,7 +9,7 @@ const slapCommand = {
         const totalResponses = response.data.length;
         const randomIndex = Math.floor(Math.random()*totalResponses);
         const randomGif = response.data[randomIndex];
-        let msg = users[0] ? (users[1] ? `Mielda ${users[1]}, tremenda cachetada te sampó ${users[0]}.` : `Agarra ahí ${users[0]}, sóbese.`) : 'Ja güeno.';
+        let msg = users[0] ? (users[1] ? `Mielda ${users[1]}, tremenda cachetada te sampó ${users[0]}.` : `Agarra ahí ${users[0]}, sóbese.`) : 'Ja weno.';
         message.channel.send(msg, {
           files: [randomGif.images.fixed_height.url]
         });

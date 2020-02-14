@@ -19,11 +19,10 @@ for(let file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
+
 client.once('ready', () => {
   console.log('I\'m ready!!!');
 });
-
-
 
 const invokedBy = [];
 const ignoreTime = 1000 * 60 * 5;
