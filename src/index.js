@@ -5,6 +5,8 @@ const path = require('path');
 require('dotenv').config();
 const { prefix, invoke } = require('../config.json');
 const utils = require('./utils');
+const events = require('./events');
+
 const botToken = process.env.DISCORD_BOT_TOKEN;
 
 const invokeBot = `${prefix}${invoke}`;
@@ -12,6 +14,7 @@ const invokeBot = `${prefix}${invoke}`;
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 const client = new Discord.Client();
+
 client.commands = new Discord.Collection();
 
 for(let file of commandFiles) {
@@ -19,9 +22,40 @@ for(let file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-
 client.once('ready', () => {
-  console.log('I\'m ready!!!');
+  console.info('I\'m ready!!!');
+  console.info(`Logged in as ${client.user.tag}!`);
+  console.info(`Logged Time: ${(new Date()).toUTCString()}`);
+  console.log('Starting events.');
+  // sayGoodBye Lois6b
+  const lois = client.users.get('145845113585664000');
+  const loisLeftTheBuildingAt = {
+    days: [1, 2, 3, 4],
+    hours: 18 + ((new Date()).getTimezoneOffset() / 60),
+    minutes: 0,
+    seconds: 0
+  }
+  const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
+  sayGoodByeLois.start();
+  sayGoodByeLois.on('say', (tag) => {
+    client.channels
+      .get('633231067674968064')
+      .send(`Mielda loco, el ${tag} salió pirado`);
+  });
+  // wake up bitches
+  const everyone = 'all';
+  const wakeUpTime = {
+    days: [1, 2, 3, 4, 5],
+    hours: 6 + ((new Date()).getTimezoneOffset() / 60),
+    minutes: Math.floor(Math.random() * 10),
+    seconds: 0
+  }
+  const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');
+  wakeUpBitches.on('say', () => {
+    client.channels
+      .get('633231067674968064')
+      .send(`A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`);
+  })
 });
 
 const invokedBy = [];
@@ -46,6 +80,8 @@ client.on('message', message => {
   }
   const command = args.shift().toLowerCase();
   switch(command) {
+    case 'jel':
+      break;
     case 'ping':
       client.commands.get('ping').execute(message, args);
       break;
@@ -97,6 +133,19 @@ client.on('message', message => {
         message.channel.send('Bájale el mío, se te va a rompé la mano.');
       }
       break;
+    case 'robar':
+      const user1 = utils.getUserFromMention(client, args[0]);
+      const user2 = utils.getUserFromMention(client, args[1]);
+      if(user1 && user1.username === 'TukiBOT') {
+        if(!user2 || user2.username === 'TukiBOT') {
+          return message.channel.send(`${message.author} ¿Me vas a malandrear gafo? Toma, por sapo!!!`, {
+            files: [client.commands.get('robbery').gif]
+          });
+        }
+      }
+      const users = [user1, user2];
+      client.commands.get('robbery').execute(message, users);
+      break;
     default:
       return;
   }
@@ -104,7 +153,11 @@ client.on('message', message => {
   //   client.commands.get('ping').execute(message, args);
   // }
 });
-          
+
+client.on('error', error => {
+  console.error('The websocket connection encountered an error:', error);
+});
+
 client.login(botToken)
   .then(() => {
 
@@ -115,3 +168,8 @@ client.login(botToken)
     console.log('Quitting app...');
     client.destroy();
   });
+
+process.on('unhandledRejection', error => {
+  console.log(`Error occured at: ${Date.now()}`);
+  console.error('Unhandled promise rejection:', error);
+});
