@@ -32,7 +32,7 @@ client.once('ready', () => {
   const loisLeftTheBuildingAt = {
     days: [1, 2, 3, 4],
     hours: 18 + ((new Date()).getTimezoneOffset() / 60),
-    minutes: 0
+    minutes: 30
   }
   const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
   sayGoodByeLois.start();
@@ -45,15 +45,17 @@ client.once('ready', () => {
   const everyone = 'all';
   const wakeUpTime = {
     days: [1, 2, 3, 4, 5],
-    hours: 7 + ((new Date()).getTimezoneOffset() / 60),
+    hours: 6 + ((new Date()).getTimezoneOffset() / 60),
     minutes: Math.floor(Math.random() * 10)
   }
   const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');
   wakeUpBitches.start();
-  wakeUpBitches.on('say', () => {
-    client.channels
-      .get('633231067674968064')
-      .send(`A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`);
+  wakeUpBitches.on('say', (tag) => {
+    if(tag && tag === 'all') {
+      client.channels
+        .get('633231067674968064')
+        .send(`A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`);
+    }
   })
 });
 
