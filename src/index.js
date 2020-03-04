@@ -32,7 +32,7 @@ client.once('ready', () => {
   const loisLeftTheBuildingAt = {
     days: [1, 2, 3, 4],
     hours: 18 + ((new Date()).getTimezoneOffset() / 60),
-    minutes: 30
+    minutes: 0
   }
   const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
   sayGoodByeLois.start();
