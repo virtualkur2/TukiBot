@@ -18,30 +18,41 @@ class SaySomething extends EventEmmiter{
     if(isNaN(this.when.hours) || this.when.hours < 0 || this.when.hours > 23) {
       return console.error(`Can't say goodbye on this unexistent hour: ${this.when.hours}`);
     }
-    if(isNaN(this.when.minutes) || this.when.minutes < 0 || this.when.minutes > 59) {
+    if(!isNaN(this.when.minutes) && (this.when.minutes < 0 || this.when.minutes > 59)) {
       return console.error(`Can't say goodbye on this unexistent minute: ${this.when.minutes}`);
     }
-    if(isNaN(this.when.seconds) || this.when.seconds < 0 || this.when.seconds > 59) {
+    if(!isNaN(this.when.seconds) && (this.when.seconds < 0 || this.when.seconds > 59)) {
       return console.error(`Can't say goodbye on this unexistent second: ${this.when.seconds}`);
     }
+    const interval = {}
+    if(!isNaN(this.when.seconds)) {
+      interval['type'] = 'seconds';
+      interval['value'] = 1000;
+    } else if(!isNaN(this.when.minutes)) {
+      interval['type'] = 'minutes';
+      interval['value'] = 1000*60;
+    } else {
+      interval['type'] = 'hours';
+      interval['value'] = 1000*60*60;
+    }
+    console.info(`Event: '${this.what}' started and set to interval: ${interval.type}.`);
     switch(this.what) {
       case 'goodbye':
         return setInterval(function(who, when, emitter) {
           let date = new Date();
           if(when.days.includes(date.getUTCDay())) {
-            if(
-              when.hours === date.getUTCHours() && 
-              when.minutes === date.getUTCMinutes() && 
-              when.seconds === date.getUTCSeconds()) {
+            if( when.hours === date.getUTCHours() && 
+              (!isNaN(when.minutes) && when.minutes === date.getUTCMinutes()) && 
+              (!isNaN(when.seconds) && when.seconds === date.getUTCSeconds())) {
                 console.info(`Saying goodbye to ${who.username} at ${date.toUTCString()}`);
                 let tag = `<@${who.id}>`
                 emitter.emit('say', tag);
               }
           }
-        }, 1000, this.who, this.when, this);
+        }, interval.value, this.who, this.when, this);
         break;
       case 'wakeup':
-        return setInterval(function(when, emitter) {
+        return setInterval(function(who, when, emitter) {
           let date = new Date();
           if(when.days.includes(date.getUTCDay())) {
             if(
@@ -52,7 +63,7 @@ class SaySomething extends EventEmmiter{
                 emitter.emit('say');
               }
           }
-        }, 1000, this.when, this);
+        }, interval.value, this.who, this.when, this);
         break;
       default:
         return console.log(`Dude, I can't say ${this.what}`);

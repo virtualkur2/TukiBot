@@ -32,8 +32,7 @@ client.once('ready', () => {
   const loisLeftTheBuildingAt = {
     days: [1, 2, 3, 4],
     hours: 18 + ((new Date()).getTimezoneOffset() / 60),
-    minutes: 0,
-    seconds: 0
+    minutes: 0
   }
   const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
   sayGoodByeLois.start();
@@ -46,11 +45,11 @@ client.once('ready', () => {
   const everyone = 'all';
   const wakeUpTime = {
     days: [1, 2, 3, 4, 5],
-    hours: 6 + ((new Date()).getTimezoneOffset() / 60),
-    minutes: Math.floor(Math.random() * 10),
-    seconds: 0
+    hours: 7 + ((new Date()).getTimezoneOffset() / 60),
+    minutes: Math.floor(Math.random() * 10)
   }
   const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');
+  wakeUpBitches.start();
   wakeUpBitches.on('say', () => {
     client.channels
       .get('633231067674968064')
