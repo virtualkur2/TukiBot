@@ -19,7 +19,7 @@ function say(who, when, what, emitter, interval) {
   }
   if(emit) {
     console.info(`Saying ${what} to ${who.username ? who.username : who} at ${date.toUTCString()}`);
-    let tag = who.username ? `<@${who.id}>` : null;
+    let tag = who.username ? `<@${who.id}>` : who;
     emitter.emit('say', tag);
   }
 }

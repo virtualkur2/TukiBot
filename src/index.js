@@ -39,7 +39,7 @@ client.once('ready', () => {
   sayGoodByeLois.on('say', (tag) => {
     client.channels
       .get('633231067674968064')
-      .send(`Mielda loco, el ${tag} salió pirado`);
+      .send(`Mielda loco, el ${tag} salió pirao.`);
   });
   // wake up bitches
   const everyone = 'all';
@@ -52,9 +52,11 @@ client.once('ready', () => {
   wakeUpBitches.start();
   wakeUpBitches.on('say', (tag) => {
     if(tag && tag === 'all') {
+      let msg = `A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`;
+      console.log(`Bot says: ${msg}`);
       client.channels
         .get('633231067674968064')
-        .send(`A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`);
+        .send(msg);
     }
   })
 });
