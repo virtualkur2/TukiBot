@@ -38,16 +38,16 @@ class SaySomething extends EventEmmiter{
       return console.error(`Can't start because missing arguments`)
     }
     if(!this.when.days || !Array.isArray(this.when.days) || !this.when.days.length) {
-      return console.error(`Can't figure out which days I have to say goodbye`);
+      return console.error(`Can't figure out which days I have to say ${this.what}`);
     }
     if(isNaN(this.when.hours) || this.when.hours < 0 || this.when.hours > 23) {
-      return console.error(`Can't say goodbye on this unexistent hour: ${this.when.hours}`);
+      return console.error(`Can't say ${this.what} on this unexistent hour: ${this.when.hours}`);
     }
     if(!isNaN(this.when.minutes) && (this.when.minutes < 0 || this.when.minutes > 59)) {
-      return console.error(`Can't say goodbye on this unexistent minute: ${this.when.minutes}`);
+      return console.error(`Can't say ${this.what} on this unexistent minute: ${this.when.minutes}`);
     }
     if(!isNaN(this.when.seconds) && (this.when.seconds < 0 || this.when.seconds > 59)) {
-      return console.error(`Can't say goodbye on this unexistent second: ${this.when.seconds}`);
+      return console.error(`Can't say ${this.what} on this unexistent second: ${this.when.seconds}`);
     }
     const interval = {}
     if(!isNaN(this.when.seconds)) {

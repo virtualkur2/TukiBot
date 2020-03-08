@@ -26,6 +26,7 @@ client.once('ready', () => {
   console.info('I\'m ready!!!');
   console.info(`Logged in as ${client.user.tag}!`);
   console.info(`Logged Time: ${(new Date()).toUTCString()}`);
+  console.log(client.users);
   console.log('Starting events.');
   // sayGoodBye Lois6b
   const lois = client.users.get('145845113585664000');
