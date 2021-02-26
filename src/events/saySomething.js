@@ -60,7 +60,7 @@ class SaySomething extends EventEmmiter{
       interval['type'] = 'hours';
       interval['value'] = 1000*60*60;
     }
-    console.info(`Event: '${this.what}' started and set to interval: ${interval.type}.`);
+    console.info(`Event: '${this.what}' started and set to interval: ${interval.type}, on: '${this.when.hours.toString().padStart(2,'0')}:${this.when.minutes ? this.when.minutes.toString().padStart(2,'0') : '00'}:${this.when.seconds ? this.when.seconds.toString().padStart(2, '0') : '00'}'.`);
     switch(this.what) {
       case 'goodbye':
         return setInterval(say, interval.value, this.who, this.when, this.what, this, interval);
@@ -68,6 +68,9 @@ class SaySomething extends EventEmmiter{
       case 'wakeup':
         return setInterval(say, interval.value, this.who, this.when, this.what, this, interval);
         break;
+        case 'quarantine':
+          return setInterval(say, interval.value, this.who, this.when, this.what, this, interval);
+          break;
       default:
         return console.log(`Dude, I can't say ${this.what}`);
     }

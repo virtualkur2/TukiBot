@@ -26,27 +26,51 @@ client.once('ready', () => {
   console.info('I\'m ready!!!');
   console.info(`Logged in as ${client.user.tag}!`);
   console.info(`Logged Time: ${(new Date()).toUTCString()}`);
-  console.log(client.users);
   console.log('Starting events.');
+
+  // console.log(client.users);
+
+  //say quarantine days of @DavidDPG
+  // const david = client.users.get('111500698528514048');
+  // const when = {
+  //   days: [0,1,2,3,4,5,6],
+  //   hours: 16 + ((new Date()).getTimezoneOffset() / 60),
+  // }
+  
+  // const quarantineStartsOn = new Date(Date.UTC(2020,2,5,14,15,0));
+  // const allQuarantineStartsOn = new Date(Date.UTC(2020,2,15,0,0,0));
+  
+  // const sayDavidIsInQuarantine = new events.SaySomething(client, david, when, 'quarantine');
+  // sayDavidIsInQuarantine.start();
+  // sayDavidIsInQuarantine.on('say', (tag) => {
+  //   const daysInQuarantine = Math.floor(((new Date()) - quarantineStartsOn) / (1000 * 60 * 60 * 24));
+  //   client.channels
+  //     .get('633231067674968064')
+  //     .send(`Mielda chamo, el ${tag} tiene ${daysInQuarantine} dias en cuarentena. Sape gato!!!`);
+  // });
+
   // sayGoodBye Lois6b
-  const lois = client.users.get('145845113585664000');
-  const loisLeftTheBuildingAt = {
-    days: [1, 2, 3, 4],
-    hours: 18 + ((new Date()).getTimezoneOffset() / 60),
-    minutes: 0
-  }
-  const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
-  sayGoodByeLois.start();
-  sayGoodByeLois.on('say', (tag) => {
-    client.channels
-      .get('633231067674968064')
-      .send(`Mielda loco, el ${tag} salió pirao.`);
-  });
+  // const lois = client.users.get('145845113585664000');
+  // const loisLeftTheBuildingAt = {
+  //   days: [1, 2, 3, 4],
+  //   hours: 18 + ((new Date()).getTimezoneOffset() / 60),
+  //   minutes: 0
+  // }
+  // const sayGoodByeLois = new events.SaySomething(client, lois, loisLeftTheBuildingAt, 'goodbye');
+  // sayGoodByeLois.start();
+  // sayGoodByeLois.on('say', (tag) => {
+  //   const daysInQuarantine = Math.floor(((new Date()) - allQuarantineStartsOn) / (1000 * 60 * 60 * 24));
+  //   client.channels
+  //     .get('633231067674968064')
+  //     .send(`<@674279815771062275> tú no aprendes? El ${tag} y todos los demás ya llevan ${daysInQuarantine} días en cuarentena. Si eres gafo vale.`);
+  // });
+
   // wake up bitches
   const everyone = 'all';
+  const timeZoneOffset = Math.floor(((new Date()).getTimezoneOffset()) / 60);
   const wakeUpTime = {
     days: [1, 2, 3, 4, 5],
-    hours: 6 + ((new Date()).getTimezoneOffset() / 60),
+    hours: timeZoneOffset > -2 ? 7 + timeZoneOffset : 8 + timeZoneOffset,
     minutes: Math.floor(Math.random() * 10)
   }
   const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');

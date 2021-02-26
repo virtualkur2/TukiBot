@@ -1,12 +1,9 @@
 const path = require('path');
 const giphyClient = require('../giphyClient');
 const shuffle = require('../utils').shuffle;
-const robberyGifs = {q: 'robbery+fail', limit: 20} // <- Muy pocos gifs
+const robberyGifs = {q: 'robbery fail', limit: 20, offset: 0, rating: 'PG'} // <- Muy pocos gifs
 
-let date = Date.now();
-let gifReloadTime = 1000 * 60 * 60 * 24;
 let gifData = [];
-let gifIndex = 0;
 
 const robberyCommand = {
   name: 'robbery',
@@ -16,19 +13,16 @@ const robberyCommand = {
     name: 'robbery.gif'
   },
   async execute(message, users) {
-    const executedAt = Date.now();
     try {
-      if(!gifData.length || (executedAt - date) > gifReloadTime) {
-        date = Date.now();
+      if(!gifData.length) {
         response = await giphyClient.search('gifs', robberyGifs);
+        console.info(`Robbery Gif's list refreshed at: ${new Date()}`);
         gifData = shuffle(response.data);
-        gifIndex = 0;
       }
-      if(gifIndex > gifData.length - 1) {
-        gifIndex = 0;
-        gifData = shuffle(gifData);
-      }
-      const gif = gifData[gifIndex++];
+      const gif = gifData.shift();
+      console.info(`Command: ${this.name}.`);
+      console.info(`Extracting url from list: ${gif.images.fixed_height.url}.`);
+      console.info(`List now contains ${gifData.length} elements`);
       let msg = users[0] ? (users[1] ? `${users[0]} trató de robar a ${users[1]} y no pudo, que bolas!!!` : `Quieto ${users[0]} tas robao!!! Mielda menol, salió mal, pira pira.`) : 'Verga el mío, me caí con los kilos.';
       message.channel.send(msg, {
         files: [gif.images.fixed_height.url]
