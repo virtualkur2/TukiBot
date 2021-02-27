@@ -3,7 +3,7 @@ const slapGifs = {q: 'slap', limit: 100};
 let count = 0;
 const slapCommand = {
   name: 'slap',
-  description: 'Slap user',
+  description: 'Te mete senda cachetada',
   execute(message, users) {
     count++;
     console.log(count);

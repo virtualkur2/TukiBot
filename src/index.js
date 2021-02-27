@@ -1,8 +1,11 @@
 const Discord = require('discord.js');
+// const { Client, Intents, Collection } = require('discord.js');
+
 const fs = require('fs');
 const path = require('path');
 
 require('dotenv').config();
+
 const { prefix, invoke } = require('../config.json');
 const utils = require('./utils');
 const events = require('./events');
@@ -13,7 +16,11 @@ const invokeBot = `${prefix}${invoke}`;
 
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
-const client = new Discord.Client();
+
+const intents = new Discord.Intents();
+intents.add(Discord.Intents.ALL);
+
+const client = new Discord.Client({ intents: intents });
 
 client.commands = new Discord.Collection();
 
@@ -26,7 +33,7 @@ client.once('ready', () => {
   console.info('I\'m ready!!!');
   console.info(`Logged in as ${client.user.tag}!`);
   console.info(`Logged Time: ${(new Date()).toUTCString()}`);
-  console.log('Starting events.');
+  // console.log('Starting events.');
 
   // console.log(client.users);
 
@@ -36,10 +43,10 @@ client.once('ready', () => {
   //   days: [0,1,2,3,4,5,6],
   //   hours: 16 + ((new Date()).getTimezoneOffset() / 60),
   // }
-  
+
   // const quarantineStartsOn = new Date(Date.UTC(2020,2,5,14,15,0));
   // const allQuarantineStartsOn = new Date(Date.UTC(2020,2,15,0,0,0));
-  
+
   // const sayDavidIsInQuarantine = new events.SaySomething(client, david, when, 'quarantine');
   // sayDavidIsInQuarantine.start();
   // sayDavidIsInQuarantine.on('say', (tag) => {
@@ -66,24 +73,24 @@ client.once('ready', () => {
   // });
 
   // wake up bitches
-  const everyone = 'all';
-  const timeZoneOffset = Math.floor(((new Date()).getTimezoneOffset()) / 60);
-  const wakeUpTime = {
-    days: [1, 2, 3, 4, 5],
-    hours: timeZoneOffset > -2 ? 7 + timeZoneOffset : 8 + timeZoneOffset,
-    minutes: Math.floor(Math.random() * 10)
-  }
-  const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');
-  wakeUpBitches.start();
-  wakeUpBitches.on('say', (tag) => {
-    if(tag && tag === 'all') {
-      let msg = `A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`;
-      console.log(`Bot says: ${msg}`);
-      client.channels
-        .get('633231067674968064')
-        .send(msg);
-    }
-  })
+  // const everyone = 'all';
+  // const timeZoneOffset = Math.floor(((new Date()).getTimezoneOffset()) / 60);
+  // const wakeUpTime = {
+  //   days: [1, 2, 3, 4, 5],
+  //   hours: timeZoneOffset > -2 ? 7 + timeZoneOffset : 8 + timeZoneOffset,
+  //   minutes: Math.floor(Math.random() * 10)
+  // }
+  // const wakeUpBitches = new events.SaySomething(client, everyone, wakeUpTime, 'wakeup');
+  // wakeUpBitches.start();
+  // wakeUpBitches.on('say', (tag) => {
+  //   if(tag && tag === 'all') {
+  //     let msg = `A levantalse cuelda e' vagos, hay que producir. Moviendo ese culo, no quiero comiquita.`;
+  //     console.log(`Bot says: ${msg}`);
+  //     client.channels
+  //       .get('633231067674968064')
+  //       .send(msg);
+  //   }
+  // });
 });
 
 const invokedBy = [];
@@ -95,20 +102,21 @@ const slapOptions = {
 }
 
 client.on('message', message => {
-  if(!message.content.startsWith(invokeBot)|| message.author.bot) return;
+  if(!message.content.startsWith(invokeBot) || message.author.bot) return;
   if(message.content.length > invokeBot.length && message.content.charAt(invokeBot.length) !== ' ') return;
-  
+
   // actions to do when bot invoked
   let args = message.content.slice(invokeBot.length).split(' ');
   //remove void char
   if(!args[0]) args.shift();
 
   if(!args.length) {
-     return client.commands.get('noargs').execute(message, invokedBy, ignoreTime);
+     return client.commands.get('noargs').execute(message);
   }
   const command = args.shift().toLowerCase();
   switch(command) {
-    case 'jel':
+    case 'rescata':
+      client.commands.get('help').execute(message, client.commands);
       break;
     case 'ping':
       client.commands.get('ping').execute(message, args);
@@ -148,22 +156,24 @@ client.on('message', message => {
         slapOptions.invokers[index].give = true;
       }
       if(slapOptions.invokers[index].give) {
-        const user1 = utils.getUserFromMention(client, args[0]);
-        const user2 = utils.getUserFromMention(client, args[1]);
+        const [user1, user2] = utils.getMentionedUsers(message);
+        // const user1 = utils.getUserFromMention(client, args[0]);
+        // const user2 = utils.getUserFromMention(client, args[1]);
         if(user1 && user1.username === 'TukiBOT') {
           if(!user2 || user2.username === 'TukiBOT') {
             return message.channel.send('Arranca de aquí diablo, ante que te meta tres tiros pa\' que seas serio.');
           }
         }
-        const users = [user1, user2];
-        client.commands.get('slap').execute(message, users);
+        // const users = [user1, user2];
+        client.commands.get('slap').execute(message, [user1, user2]);
       } else {
         message.channel.send('Bájale el mío, se te va a rompé la mano.');
       }
       break;
     case 'robar':
-      const user1 = utils.getUserFromMention(client, args[0]);
-      const user2 = utils.getUserFromMention(client, args[1]);
+      const [user1, user2] = utils.getMentionedUsers(message);
+      // const user1 = utils.getUserFromMention(client, args[0]);
+      // const user2 = utils.getUserFromMention(client, args[1]);
       if(user1 && user1.username === 'TukiBOT') {
         if(!user2 || user2.username === 'TukiBOT') {
           return message.channel.send(`${message.author} ¿Me vas a malandrear gafo? Toma, por sapo!!!`, {
@@ -171,8 +181,7 @@ client.on('message', message => {
           });
         }
       }
-      const users = [user1, user2];
-      client.commands.get('robbery').execute(message, users);
+      client.commands.get('robbery').execute(message, [user1, user2]);
       break;
     default:
       return;
@@ -188,7 +197,7 @@ client.on('error', error => {
 
 client.login(botToken)
   .then(() => {
-
+    console.log('Logged In');
   })
   .catch(error => {
     console.error('An error occurred during login');

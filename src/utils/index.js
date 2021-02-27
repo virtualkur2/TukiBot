@@ -8,10 +8,16 @@ const utils = {
       if (mention.startsWith('!')) {
         mention = mention.slice(1);
       }
-
-      return client.users.get(mention);
+      console.log(client.users.get(mention));
+      return client.users;
     }
     return;
+  },
+  getMentionedUsers: (message) => {
+    if(!message.mentions) {
+      return;
+    }
+    return message.mentions.users.array();
   },
   shuffle: (array) => {
     if (!array || !array.length || array.length < 2) return array;

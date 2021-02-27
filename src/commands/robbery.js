@@ -7,7 +7,7 @@ let gifData = [];
 
 const robberyCommand = {
   name: 'robbery',
-  description: 'Show robbery fail gifs',
+  description: 'Te tiro un quieto, menol',
   gif:{
     attachment: path.join(__dirname, 'robbery.gif'),
     name: 'robbery.gif'
