@@ -29,6 +29,18 @@ for(let file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
+
+client.on('ready', () => {
+  console.log(typeof client.user.setPresence);
+  client.user.setPresence({
+    status: 'online',
+    activity: {
+      name: '!Tuki',
+      type: 'PLAYING'
+    }
+  });
+});
+
 client.once('ready', () => {
   console.info('I\'m ready!!!');
   console.info(`Logged in as ${client.user.tag}!`);

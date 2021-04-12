@@ -5,7 +5,7 @@ const helpEmbed = new MessageEmbed()
 .setColor('#ff8800')
 .setTitle('Aquí te rescato, menol')
 .setDescription('Comandos disponibles pal malandreo. No quiero comiquita...')
-.setThumbnail('https://omnipc.ddns.net/api/tuki')
+.setThumbnail('https://omnipc.ddns.net/api/tuki/tuki_thumbnail.png')
 .addFields(
   { name: '\u200B', value: '\u200B' },
 	{ name: '!tuki rescata', value: 'Muestra este beta' },
