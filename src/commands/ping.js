@@ -1,9 +1,12 @@
-const pingCommand = {
-  name: 'ping',
-  description: 'Ja weno',
-  execute(message, args) {
-    message.channel.send('Ay vaaaale, este quiere pinga.');
+const { SlashCommandBuilder } = require('discord.js');
+
+const ping = {
+  data: new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Ja weno'),
+  async execute(interaction) {
+    await interaction.reply('Ay vaaaale, este quiere pinga.');
   }
 }
 
-module.exports = pingCommand;
+module.exports = ping;
