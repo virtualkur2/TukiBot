@@ -12,7 +12,7 @@ const interactionCreate = {
 			return;
 		}
 		try {
-			console.log(`Comando recibido: ${interaction.commandName}`);
+			console.log(`[LOG: ${new Date().toUTCString()}] Comando recibido: ${interaction.commandName}`);
 			await command.execute(interaction);
 		}
 		catch (error) {
