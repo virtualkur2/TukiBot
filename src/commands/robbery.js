@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const axios = require('axios');
+const path = require('path');
+const fs = require('fs');
 const shuffle = require('../utils').shuffle;
-const baseTukiURL = 'https://omnipc.ddns.net/api/tuki/';
 const messageNoGif = 'Mielda menol, me caí con los kilos';
 let robberyRandom = [];
 
@@ -20,14 +20,8 @@ const robbery = {
 	async execute(interaction) {
 		const source = interaction.options.getUser('source');
 		const target = interaction.options.getUser('target');
-		const robberyURL = new URL('robbery', baseTukiURL).toString();
-		const robberyGifs = await axios.get({
-			method: 'get',
-			url: robberyURL,
-			responseType: 'json',
-		})
-			.then(response => response.data)
-			.catch(e => console.error(e));
+		const robberyPath = path.join(__dirname, '../assets/robbery');
+		const robberyGifs = fs.readdirSync(robberyPath).filter(file => file.endsWith('.gif'));
 		if (!(robberyGifs && robberyGifs.length)) {
 			return interaction.reply(messageNoGif);
 		}
@@ -35,13 +29,13 @@ const robbery = {
 			robberyRandom = shuffle(robberyGifs);
 		}
 		const robberyImage = robberyRandom.pop();
-		const robberyImageURL = new URL(robberyImage, robberyURL).toString();
+		const robberyImageURL = path.join(robberyPath, robberyImage);
 		const randomRobberyGif = new AttachmentBuilder(robberyImageURL);
 		let message = 'Verga el mío, me caí con los kilos!!!';
 		if (target && source) {
 			message = `${source} trató de robar a ${target} y no pudo, que bolas!!!`;
 		}
-		if ((!target && source) || (source && !target)) {
+		if ((target && !source) || (source && !target)) {
 			message = `Quieto ${source ?? target} tas robao!!! Mielda menol, salió mal, pira pira!!!`;
 		}
 		await interaction.reply({ files: [randomRobberyGif], content: message });
