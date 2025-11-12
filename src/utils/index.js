@@ -14,14 +14,16 @@ const utils = {
     return;
   },
   getMentionedUsers: (message) => {
-    if(!message.mentions) {
+    if (!message.mentions) {
       return;
     }
     return message.mentions.users.array();
   },
-  shuffle: (array) => {
-    if (!array || !array.length || array.length < 2) return array;
-    for(let index = array.length - 1; index > 0; index--) {
+  shuffle: (arr) => {
+    if (!Array.isArray(arr)) return arr;
+    const array = arr.map(e => e);
+    if (array.length < 2) return array;
+    for (let index = array.length - 1; index > 0; index--) {
       let shuffled_index = Math.floor(Math.random() * (index + 1));
       let tmp = array[index];
       array[index] = array[shuffled_index];
